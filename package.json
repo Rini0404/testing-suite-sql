@@ -1,0 +1,22 @@
+{
+  "name": "nodeJs-testing-examples",
+  "version": "1.0.0",
+  "description": "Example/learning testing suites",
+  "main": "server.js",
+  "author": "Rini ",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "devDependencies": {
+    "jest": "^29.6.4",
+    "jest-mock-extended": "^3.0.5",
+    "supertest": "^6.3.3"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sequelize": "^6.32.1",
+    "sqlite3": "^5.1.6"
+  }
+}
