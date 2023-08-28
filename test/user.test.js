@@ -1,7 +1,8 @@
-// __tests__/user.test.js
-const sequelize = require('../db');
-const User = require('../models/Users');
+import { createUser } from '../controllers';
+import sequelize from '../db';
+import User from '../models/Users';
 
+// initialize the mock db
 beforeAll(async () => {
   await sequelize.sync({ force: true });
 });
@@ -12,15 +13,58 @@ afterAll(async () => {
 
 
 describe('User Model', () => {
-  it('creates a new user', async () => {
-    const user = await User.create({
-      username: 'testuser',
-      password: 'testpassword',
-    });
+  it('should see if a success returns a 200 code', async () => {
+    const mockRequest = {
+      body: {
+        username: 'riniBini',
+        password: '123456',
+        role: 'admin',
+        moviesLiked: ['movie1', 'movie2']
+      }
+    };    
+    //json:: This sets up a property on the mock res object to mimic the real res.json method.
+    // jest.fn(): This creates a new mock function to replace the res.json method.
 
-    expect(user.id).toBe(1);
-    expect(user.username).toBe('testuser');
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),  // To chain .json()
+      json: jest.fn()
+    };
+    
+    await createUser(mockRequest, mockResponse);
+    
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
   });
+
+  it('should create a user', async () => {
+    const mockRequest = {
+      body: {
+        username: 'riniBini',
+        password: '123456',
+        role: 'admin',
+        moviesLiked: ['movie1', 'movie2']
+      }
+    };
+
+    const mockResponse = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn()
+    };
+
+    await createUser(mockRequest, mockResponse);
+
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      user: {
+        username: mockRequest.body.username,
+        password:  mockRequest.body.password,
+        role: mockRequest.body.role,
+        moviesLiked:  mockRequest.body.moviesLiked
+      }
+    }
+    );
+
+  });
+  
 });
 
 
