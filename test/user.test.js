@@ -1,6 +1,5 @@
-import { createUser } from '../controllers';
-import sequelize from '../db';
-import User from '../models/Users';
+import { createUser } from '../src/controllers/user';
+import sequelize from '../src/db';
 
 // initialize the mock db
 beforeAll(async () => {
@@ -66,5 +65,3 @@ describe('User Model', () => {
   });
   
 });
-
-
