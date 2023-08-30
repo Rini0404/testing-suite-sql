@@ -52,15 +52,16 @@ describe('User Model', () => {
     await createUser(mockRequest, mockResponse);
 
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      user: {
-        username: mockRequest.body.username,
-        password:  mockRequest.body.password,
-        role: mockRequest.body.role,
-        moviesLiked:  mockRequest.body.moviesLiked
-      }
-    }
-    );
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        user: expect.objectContaining({
+          username: 'riniBini',
+          password: '123456',
+          role: 'admin',
+          moviesLiked: ['movie1', 'movie2']
+        })
+      })
+    )
 
   });
   

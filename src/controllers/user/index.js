@@ -15,11 +15,12 @@ exports.createUser = async (req, res) => {
       moviesLiked: req.body.moviesLiked
     }
 
-    console.log('userObject: ', userObject);
-
+    const newUser = await User.create(userObject);
+    
+    console.log('newUser: ', newUser)
 
     return res.status(200).json({
-      user: userObject
+      user: newUser
     });
   } catch (error) {
     console.log('error in createUser: ', error);

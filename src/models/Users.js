@@ -1,6 +1,6 @@
-// models/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const Feed  = require('./Feed');
 
 const ROLES = {
   ADMIN: 'admin',
@@ -9,6 +9,13 @@ const ROLES = {
 
 
 const User = sequelize.define('User', {
+  // ID attribute
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -22,8 +29,10 @@ const User = sequelize.define('User', {
     allowNull: false,
     defaultValue: ROLES.BASIC,
   },
-  moviesLiked: [ DataTypes.STRING ]
+  moviesLiked: [ DataTypes.STRING ],
+
 
 });
+
 
 module.exports = User;
