@@ -1,5 +1,5 @@
-import { createUser } from '../src/controllers/user';
-import sequelize from '../src/db';
+import { createUser } from '.';
+import sequelize from '../../db';
 
 // initialize the mock db
 beforeAll(async () => {

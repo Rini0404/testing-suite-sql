@@ -1,5 +1,6 @@
-const { Feed } = require("../../models/Feed");
+const { Feed, FEED_TYPE } = require("../../models/Feed");
 const { savePostToUser } = require("./saveToUser");
+
 
 
 exports.createAPost = async (req, res) => {
@@ -18,17 +19,12 @@ exports.createAPost = async (req, res) => {
       userId: req.body.userId,
     }
 
-    console.log('feedObject: ', feedObject);
-
     const newFeed = await Feed.create(feedObject);
 
-    // const savedPostToUser = await savePostToUser(newFeed.id, newFeed.userId);
+    if(feedObject.type === FEED_TYPE.POLL) {
+      console.log('newFeed: ', newFeed);
+    }
 
-    // if(!savedPostToUser) {
-    //   return res.status(500).json({
-    //     message: 'Something went wrong'
-    //   });
-    // }
 
     return res.status(200).json({
       feed: newFeed,
@@ -45,3 +41,12 @@ exports.createAPost = async (req, res) => {
 
 }
 
+
+
+    // const savedPostToUser = await savePostToUser(newFeed.id, newFeed.userId);
+
+    // if(!savedPostToUser) {
+    //   return res.status(500).json({
+    //     message: 'Something went wrong'
+    //   });
+    // }s

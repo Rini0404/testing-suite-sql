@@ -1,11 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const User = require('./Users');
+const { FEED_TYPE } = require('../constants');
 
-const FEED_TYPE = {
-  POLL: 'poll',
-  POST: 'post',
-};
 
 const Feed = sequelize.define('Feed', {
   // ID attribute
