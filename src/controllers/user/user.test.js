@@ -1,68 +1,143 @@
-import { createUser } from '.';
+import { createUser } from './';
 import sequelize from '../../db';
+import User from '../../models/Users';
 
-// initialize the mock db
+// Initialize the mock db
 beforeAll(async () => {
   await sequelize.sync({ force: true });
+  await User.create({
+    username: 'riniTest',
+    password: '123456',
+    role: 'admin',
+    moviesLiked: ['movie1', 'movie2'],
+  });
 });
 
 afterAll(async () => {
   await sequelize.close();
 });
 
-
-describe('User Model', () => {
-  it('should see if a success returns a 200 code', async () => {
+describe('create a user', () => {
+  it('should return an error if the username already exists', async () => {
     const mockRequest = {
       body: {
-        username: 'riniBini',
+        username: 'riniTest',
         password: '123456',
         role: 'admin',
-        moviesLiked: ['movie1', 'movie2']
-      }
-    };    
-    //json:: This sets up a property on the mock res object to mimic the real res.json method.
-    // jest.fn(): This creates a new mock function to replace the res.json method.
+        moviesLiked: ['movie1', 'movie2'],
+      },
+    };
 
     const mockResponse = {
-      status: jest.fn().mockReturnThis(),  // To chain .json()
-      json: jest.fn()
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
     };
-    
+
     await createUser(mockRequest, mockResponse);
-    
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    expect(mockResponse.status).toHaveBeenCalledWith(409);
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'Username already exists',
+      })
+    );
   });
 
   it('should create a user', async () => {
     const mockRequest = {
       body: {
-        username: 'riniBini',
+        username: 'newUser',
         password: '123456',
-        role: 'admin',
-        moviesLiked: ['movie1', 'movie2']
-      }
+        role: 'user',
+        moviesLiked: ['movie3', 'movie4'],
+      },
     };
 
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
-      json: jest.fn()
+      json: jest.fn(),
     };
 
     await createUser(mockRequest, mockResponse);
 
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    expect(mockResponse.status).toHaveBeenCalledWith(201);
     expect(mockResponse.json).toHaveBeenCalledWith(
       expect.objectContaining({
-        user: expect.objectContaining({
-          username: 'riniBini',
-          password: '123456',
-          role: 'admin',
-          moviesLiked: ['movie1', 'movie2']
-        })
+        username: 'newUser',
+        role: 'user',
+        moviesLiked: ['movie3', 'movie4'],
       })
-    )
-
+    );
   });
-  
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// describe('User Model', () => {
+//   it('should see if a success returns a 200 code', async () => {
+//     const mockRequest = {
+//       body: {
+//         username: 'riniBini',
+//         password: '123456',
+//         role: 'admin',
+//         moviesLiked: ['movie1', 'movie2']
+//       }
+//     };    
+
+//     const mockResponse = {
+//       status: jest.fn().mockReturnThis(),  // To chain .json()
+//       json: jest.fn()
+//     };
+    
+//     await createUser(mockRequest, mockResponse);
+    
+//     expect(mockResponse.status).toHaveBeenCalledWith(200);
+//   });
+
+//   it('should create a user', async () => {
+//     const mockRequest = {
+//       body: {
+//         username: 'riniBini',
+//         password: '123456',
+//         role: 'admin',
+//         moviesLiked: ['movie1', 'movie2']
+//       }
+//     };
+
+//     const mockResponse = {
+//       status: jest.fn().mockReturnThis(),
+//       json: jest.fn()
+//     };
+
+//     await createUser(mockRequest, mockResponse);
+
+//     expect(mockResponse.status).toHaveBeenCalledWith(200);
+//     expect(mockResponse.json).toHaveBeenCalledWith(
+//       expect.objectContaining({
+//         user: expect.objectContaining({
+//           username: 'riniBini',
+//           password: '123456',
+//           role: 'admin',
+//           moviesLiked: ['movie1', 'movie2']
+//         })
+//       })
+//     )
+
+//   });
+  
+// });

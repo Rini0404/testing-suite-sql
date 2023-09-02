@@ -1,12 +1,10 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Feed  = require('./Feed');
 
 const ROLES = {
   ADMIN: 'admin',
   BASIC: 'basic',
 };
-
 
 const User = sequelize.define('User', {
   // ID attribute
